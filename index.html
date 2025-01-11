@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kniffel Spiel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Kniffel</h1>
+        <div class="setup-area">
+            <label for="num-players">Anzahl Spieler:</label>
+            <input type="number" id="num-players" min="2" value="2">
+            <button id="start-game-button">Spiel Starten</button>
+        </div>
+      <div class="players"></div>
+      <div class="game-area hidden">
+          <div class="dice-area">
+            <div class="dice-row">
+              <div class="die" data-index="0"></div>
+              <div class="die" data-index="1"></div>
+              <div class="die" data-index="2"></div>
+              <div class="die" data-index="3"></div>
+              <div class="die" data-index="4"></div>
+            </div>
+            <button id="roll-button">Würfeln</button>
+            <div class="rolls-left">Würfe übrig: 3</div>
+          </div>
+          <div class="scoreboards">
+                <div class="scoreboard">
+                  <h2>Punkte</h2>
+                      <table class="score-table">
+                        <thead>
+                            <tr>
+                                <th>Kategorie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr data-cat="aces"><td>Einser (1)</td></tr>
+                          <tr data-cat="twos"><td>Zweier (2)</td></tr>
+                          <tr data-cat="threes"><td>Dreier (3)</td></tr>
+                          <tr data-cat="fours"><td>Vierer (4)</td></tr>
+                          <tr data-cat="fives"><td>Fünfer (5)</td></tr>
+                          <tr data-cat="sixes"><td>Sechser (6)</td></tr>
+                            <tr data-cat="bonus"><td>Bonus</td></tr>
+                          <tr data-cat="three-of-a-kind"><td>Dreierpasch</td></tr>
+                          <tr data-cat="four-of-a-kind"><td>Viererpasch</td></tr>
+                          <tr data-cat="full-house"><td>Full House</td></tr>
+                          <tr data-cat="small-straight"><td>Kleine Straße</td></tr>
+                          <tr data-cat="large-straight"><td>Große Straße</td></tr>
+                          <tr data-cat="kniffel"><td>Kniffel</td></tr>
+                          <tr data-cat="chance"><td>Chance</td></tr>
+                          <tr class="total"><td>Total</td></tr>
+                        </tbody>
+                      </table>
+                </div>
+          </div>
+          <div class="message"></div>
+           <button id="restart-button">Neues Spiel</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
