@@ -109,6 +109,11 @@ h1 {
   font-size: 1em;
 }
 
+#roll-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
 #start-game-button {
   padding: 8px 12px;
   background-color: #007bff;

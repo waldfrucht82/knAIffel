@@ -72,6 +72,7 @@ function initGame() {
     updateDisplay();
     updateDiceDisplay();
     clearScoreBoards();
+    rollButton.disabled = false;
 }
 
 
@@ -210,7 +211,10 @@ function switchPlayer() {
     currentPlayer = currentPlayer === numPlayers ? 1 : currentPlayer + 1;
     updateDisplay();
     if (isAIEnabled && currentPlayer === 2 && !gameOver) {
+        rollButton.disabled = true;
         setTimeout(aiTurn, 1000);
+    } else {
+        rollButton.disabled = false;
     }
 }
 
