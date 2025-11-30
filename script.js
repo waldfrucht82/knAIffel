@@ -14,10 +14,10 @@ let currentPlayer = 1;
 let diceValues = [0, 0, 0, 0, 0];
 let selectedDice = [false, false, false, false, false];
 let rollsLeft = 3;
-let scores = {};
 let gameOver = false;
 let numPlayers = 2;
 let playerElements = [];
+let isAIEnabled = false;
 
 const diceSVGs = {
     1: `<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="12" fill="black" /></svg>`,
@@ -34,6 +34,11 @@ startGameButton.addEventListener('click', () => {
         displayMessage("Bitte mindestens 2 Spieler eingeben.");
         return;
     }
+    if (numPlayers < 2) {
+        displayMessage("Bitte mindestens 2 Spieler eingeben.");
+        return;
+    }
+    isAIEnabled = document.getElementById('ai-player').checked;
     initGame();
     setupArea.classList.add('hidden');
     gameArea.classList.remove('hidden');
@@ -115,11 +120,11 @@ diceElements.forEach((die, index) => {
 rollButton.addEventListener('click', rollDice);
 
 function updateScoreboard() {
-      const headerRow = scoreTable.querySelector('thead tr');
-      // Remove existing player columns
-       while (headerRow.cells.length > 1) {
-          headerRow.deleteCell(1);
-      }
+    const headerRow = scoreTable.querySelector('thead tr');
+    // Remove existing player columns
+    while (headerRow.cells.length > 1) {
+        headerRow.deleteCell(1);
+    }
 
     for (let i = 1; i <= numPlayers; i++) {
         const th = document.createElement('th');
@@ -128,33 +133,33 @@ function updateScoreboard() {
     }
     const scoreRows = scoreTable.querySelectorAll('tbody tr');
     scoreRows.forEach(row => {
-      //Remove existing score columns
-         while (row.cells.length > 1) {
-          row.deleteCell(1);
+        //Remove existing score columns
+        while (row.cells.length > 1) {
+            row.deleteCell(1);
         }
         for (let i = 1; i <= numPlayers; i++) {
             const cell = document.createElement('td');
             cell.classList.add('score-cell');
             cell.dataset.player = i;
             row.appendChild(cell);
-            if (row.dataset.cat !== 'bonus' ) {
-              if(!row.classList.contains('total')) {
-                cell.addEventListener('click', function () {
-                    if (gameOver) return;
-                    if (rollsLeft === 3) return;
-                    const player = parseInt(this.dataset.player);
-                    if (player !== currentPlayer) {
-                        displayMessage('Nicht dein Zug');
-                        return;
-                    }
-                    const category = this.closest('tr').dataset.cat;
-                    if (scores[player][category] !== undefined) {
-                        displayMessage('Kategorie bereits ausgewählt');
-                        return;
-                    }
-                    selectScore(category, player, this)
-                  })
-               }
+            if (row.dataset.cat !== 'bonus') {
+                if (!row.classList.contains('total')) {
+                    cell.addEventListener('click', function () {
+                        if (gameOver) return;
+                        if (rollsLeft === 3) return;
+                        const player = parseInt(this.dataset.player);
+                        if (player !== currentPlayer) {
+                            displayMessage('Nicht dein Zug');
+                            return;
+                        }
+                        const category = this.closest('tr').dataset.cat;
+                        if (scores[player][category] !== undefined) {
+                            displayMessage('Kategorie bereits ausgewählt');
+                            return;
+                        }
+                        selectScore(category, player, this)
+                    })
+                }
             }
         }
     })
@@ -174,11 +179,9 @@ function selectScore(category, player, cell) {
     cell.textContent = score;
     const bonusAssigned = updateBonusScore(player);
     updateScoreboardTotal();
-    if (!bonusAssigned) {
-        resetTurn();
-        switchPlayer();
-        checkGameEnd();
-    }
+    resetTurn();
+    switchPlayer();
+    checkGameEnd();
 
 }
 
@@ -206,6 +209,9 @@ function resetTurn() {
 function switchPlayer() {
     currentPlayer = currentPlayer === numPlayers ? 1 : currentPlayer + 1;
     updateDisplay();
+    if (isAIEnabled && currentPlayer === 2 && !gameOver) {
+        setTimeout(aiTurn, 1000);
+    }
 }
 
 function clearScoreBoards() {
